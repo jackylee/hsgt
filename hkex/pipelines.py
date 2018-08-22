@@ -8,6 +8,7 @@ import codecs
 import json
 import pymysql
 import scrapy
+import sys
 
 #class HkexPipeline(object):
 #    def __init__(self):
@@ -30,6 +31,11 @@ class MysqlPipeline(object):
         self.conn.close()
 
     def process_item(self, item, spider):
-        self.cursor.execute("""insert into stock_data(stock_code, stock_name, stock_hold, stock_percent, stock_date) values(%s, %s, %s, %s, %s)""", ( item['stock_code'], item['stock_name'], item['stock_hold'], item['stock_percent'], item['stock_date']))
-        self.conn.commit()
+        try:
+            self.cursor.execute("""insert into stock_data(stock_code, stock_name, stock_hold, stock_percent, stock_date, ishk) values(%s, %s, %s, %s, %s, %s)""", ( item['stock_code'], item['stock_name'], item['stock_hold'], item['stock_percent'], item['stock_date'], item['ishk']))
+            self.conn.commit()
+        except:
+            e = sys.exc_info()[0]
+            logging.warning("parse item incorrect" + "".join(e))
+            pass
 

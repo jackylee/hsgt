@@ -16,4 +16,5 @@ class HkexItem(scrapy.Item):
     stock_hold = scrapy.Field()
     stock_percent = scrapy.Field()
     stock_date = scrapy.Field()
+    ishk = scrapy.Field()
     pass
